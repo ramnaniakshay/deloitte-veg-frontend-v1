@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+API Documentation for Vegetable Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Base URL: http://localhost:1337/api
 
-## Available Scripts
+Authentication: Bearer Token (JWT) - required for all protected endpoints.  Obtain token from /api/auth/local endpoint after successful login.
 
-In the project directory, you can run:
 
-### `npm start`
+Endpoints:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1.  /api/auth/local
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    *   Method: POST
+    *   Description: Authenticates a user and returns a JWT.
+    *   Request Body:
+        ```json
+        {
+          "identifier": "user_email",
+          "password": "user_password"
+        }
+        ```
+    *   Response (Success - 200 OK):
+        ```json
+        {
+          "jwt": "your_jwt_token",
+          "user": { /* User details */ }
+        }
+        ```
 
-### `npm test`
+2.  /api/auth/local/register
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    *   Method: POST
+    *   Description: Registers a new user.
+    *   Request Body:
+        ```json
+        {
+          "username": "new_username",
+          "email": "new_user_email",
+          "password": "new_user_password"
+        }
+        ```
+    *   Response (Success - 200 OK):  Similar to /api/auth/local login response.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3.  /api/master-vegs
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    *   Method: GET
+    *   Description: Retrieves all vegetables. Requires authentication.
+    *   Response (Success - 200 OK):
+        ```json
+        {
+          "data": [
+            {
+              "id": 1,
+              "attributes": {
+                "name": "Tomato",
+                "color": "Red",
+                // ... other attributes
+              }
+            },
+            // ... more vegetables
+          ]
+        }
+        ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    *   Method: POST
+    *   Description: Creates a new vegetable. Requires authentication.
+    *   Request Body:
+        ```json
+        {
+          "data": {
+            "name": "New Vegetable",
+            "color": "Green",
+            // ... other attributes
+          }
+        }
+        ```
+    *   Response (Success - 201 Created): Returns the newly created vegetable data.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4. /api/master-vegs/{documentId}
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Method: DELETE
+* Description: Deletes a specific vegetable by documentId.  Requires authentication.
+* Notes: Replace `{documentId}` with the actual documentId of the vegetable.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+Error Handling:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+All endpoints return standard HTTP error codes.  Error responses typically include a JSON object with an `error` property containing details about the error.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+Notes:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+*   Replace `{id}` with the actual ID of the vegetable.
+*   All POST requests must include the JWT in the `Authorization` header with the `Bearer` prefix.
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
